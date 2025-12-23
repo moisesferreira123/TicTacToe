@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/output.css">
+  <title>Jogo da Velha</title>
+</head>
+<body>
+  <div class="flex justify-center items-center h-screen">
+    <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
+      <div id="victory-line" class="absolute bg-red-500 h-[2%] rounded-full z-10 origin-left hidden" style="top: -1%; left: 100%; width: 142%; rotate: 135deg;"></div>
+      <button id="s0" class="relative border-r border-b border-black w-full flex justify-center items-center"></button>
+      <button id="s1" class="relative border-r border-b border-l border-black w-full flex justify-center items-center"></button>
+      <button id="s2" class="relative border-l border-b border-black w-full flex justify-center items-center"></button>
+      <button id="s3" class="relative border-r border-b border-t border-black w-full flex justify-center items-center"></button>
+      <button id="s4" class="relative border-r border-b border-l border-t border-black w-full flex justify-center items-center"></button>
+      <button id="s5" class="relative border-l border-b border-t border-black w-full flex justify-center items-center"></button>
+      <button id="s6" class="relative border-r border-t border-black w-full flex justify-center items-center"></button>
+      <button id="s7" class="relative border-r border-t border-l border-black w-full flex justify-center items-center"></button>
+      <button id="s8" class="relative border-l border-t border-black w-full flex justify-center items-center"></button>
+    </div>
+  </div>
+  <script src="./src/main.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</body>
+</html>
