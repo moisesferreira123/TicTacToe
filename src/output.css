@@ -11,10 +11,12 @@
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-black: #000;
     --spacing: 0.25rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
     --animate-pop-in: pop-in 0.3s ease-out forwards;
-    --animate-victory-line: victory-line 2s linear forwards;
+    --animate-victory-line: victory-line 0.5s linear forwards;
+    --animate-pop-in-victory: pop-in-victory 1s ease-out forwards;
   }
 }
 @layer base {
@@ -166,6 +168,9 @@
   }
 }
 @layer utilities {
+  .pointer-events-none {
+    pointer-events: none;
+  }
   .absolute {
     position: absolute;
   }
@@ -181,14 +186,17 @@
   .grid {
     display: grid;
   }
-  .hidden {
-    display: none;
+  .table {
+    display: table;
+  }
+  .h-87 {
+    height: calc(var(--spacing) * 87);
   }
   .h-87\.5 {
     height: calc(var(--spacing) * 87.5);
   }
-  .h-\[2\%\] {
-    height: 2%;
+  .h-\[3\%\] {
+    height: 3%;
   }
   .h-\[80\%\] {
     height: 80%;
@@ -199,6 +207,9 @@
   .h-screen {
     height: 100vh;
   }
+  .w-87 {
+    width: calc(var(--spacing) * 87);
+  }
   .w-87\.5 {
     width: calc(var(--spacing) * 87.5);
   }
@@ -208,14 +219,26 @@
   .w-full {
     width: 100%;
   }
+  .border-collapse {
+    border-collapse: collapse;
+  }
   .origin-left {
     transform-origin: 0;
+  }
+  .transform {
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .animate-pop-in {
     animation: var(--animate-pop-in);
   }
+  .animate-pop-in-victory {
+    animation: var(--animate-pop-in-victory);
+  }
   .animate-victory-line {
     animation: var(--animate-victory-line);
+  }
+  .resize {
+    resize: both;
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -228,6 +251,10 @@
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
   }
   .border-t {
     border-top-style: var(--tw-border-style);
@@ -248,6 +275,9 @@
   .border-black {
     border-color: var(--color-black);
   }
+  .bg-blue-500 {
+    background-color: var(--color-blue-500);
+  }
   .bg-red-500 {
     background-color: var(--color-red-500);
   }
@@ -257,15 +287,56 @@
   .text-red-500 {
     color: var(--color-red-500);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
+  }
+}
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
 }
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
 @keyframes pop-in {
   0% {
-    opacity: 0, transform: scale(0);
+    opacity: 0;
+    transform: scale(0);
   }
   70% {
     transform: scale(1.2);
@@ -277,17 +348,37 @@
 }
 @keyframes victory-line {
   0% {
-    opacity: 0, transform: scale(0);
+    transform: scaleX(0);
   }
   100% {
-    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+@keyframes pop-in-victory {
+  0% {
+    transform-origin: center;
+    transform: scale(1);
+  }
+  70% {
+    transform-origin: center;
+    transform: scale(1.2);
+  }
+  100% {
+    transform-origin: center;
     transform: scale(1);
   }
 }
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
+      --tw-rotate-x: initial;
+      --tw-rotate-y: initial;
+      --tw-rotate-z: initial;
+      --tw-skew-x: initial;
+      --tw-skew-y: initial;
       --tw-border-style: solid;
+      --tw-outline-style: solid;
+      --tw-ease: initial;
     }
   }
 }
