@@ -10,12 +10,12 @@ const victoryWays = [
   { combo: [3, 4, 5], style: "top: 48.5%; left:-5%; width: 110%; rotate: 0deg;" },
   { combo: [6, 7, 8], style: "top: 81.8%; left:-5%; width: 110%; rotate: 0deg;" },
   // Verticais
-  { combo: [0, 3, 6], style: "top: -5%; left:16.6%; width: 110%; rotate: 90deg;" },
-  { combo: [1, 4, 7], style: "top: -5%; left:50%; width: 110%; rotate: 90deg;" },
-  { combo: [2, 5, 8], style: "top: -5%; left: 83.5%; width: 110%; rotate: 90deg;" },
+  { combo: [0, 3, 6], style: "top: 48.5%; left: -38.4%; width: 110%; rotate: 90deg;" },
+  { combo: [1, 4, 7], style: "top: 48.5%; left: -4.9%; width: 110%; rotate: 90deg;" },
+  { combo: [2, 5, 8], style: "top: 48.5%; left: 28.5%; width: 110%; rotate: 90deg;" },
   // Diagonais
-  { combo: [0, 4, 8], style: "top: -1.5%; left: 0%; width: 142%; rotate: 45deg;" },
-  { combo: [2, 4, 6], style: "top: -1.5%; left: 100%; width: 142%; rotate: 135deg;" },
+  { combo: [0, 4, 8], style: "top: 49%; left: -20.5%; width: 142%; rotate: 45deg;" },
+  { combo: [2, 4, 6], style: "top: 49%; left: -21.58%; width: 142%; rotate: 135deg;" },
 ];
 
 function checkVictory() {
@@ -56,10 +56,10 @@ function checkVictory() {
 function win() {
   let colorLine;
   if(playerX) colorLine = "bg-red-500";
-  else colorLine = "bg-blue-500";
+  else colorLine = "bg-green-500";
 
   const victoryLine = document.createElement("div");
-  victoryLine.classList.add("absolute", colorLine, "h-[3%]", "rounded-full", "z-10", "origin-left", "animate-victory-line");
+  victoryLine.classList.add("absolute", colorLine, "h-[3%]", "rounded-full", "z-10", "animate-victory-line");
   
   for(const item of victoryWays) {
     if(item.combo.length === victoryIndices.length && item.combo.every((value, index) => value === victoryIndices[index])) {
@@ -79,6 +79,10 @@ function win() {
 
   setTimeout(() => {
       victoryLine.classList.remove("animate-victory-line");
+      victoryLine.classList.add("animate-pop-in-victory");
+      i0.classList.remove("animate-pop-in", "temp-animate");
+      i1.classList.remove("animate-pop-in", "temp-animate");
+      i2.classList.remove("animate-pop-in", "temp-animate");
       i0.classList.add("animate-pop-in-victory");
       i1.classList.add("animate-pop-in-victory");
       i2.classList.add("animate-pop-in-victory");
@@ -86,10 +90,12 @@ function win() {
 
   setTimeout(() => {
     board.classList.remove("pointer-events-none");
+    victoryLine.classList.remove("animate-pop-in-victory");
     i0.classList.remove("animate-pop-in-victory");
     i1.classList.remove("animate-pop-in-victory");
-    i2.classList.remove("animate-pop-in-victory", "animate-pop-in");
-  }, 3000);
+    i2.classList.remove("animate-pop-in-victory");
+
+  }, 2500);
 }
 
 board.addEventListener('click', event => {
@@ -117,7 +123,7 @@ board.addEventListener('click', event => {
     state[square] = "X";
   } else {
     symbol="circle";
-    symbolColor = "text-blue-500";
+    symbolColor = "text-green-500";
     height = "h-[80%]";
     width = "w-[80%]";
     state[square] = "O";

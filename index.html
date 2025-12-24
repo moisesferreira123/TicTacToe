@@ -6,18 +6,29 @@
   <link rel="stylesheet" href="./src/output.css">
   <title>Jogo da Velha</title>
 </head>
-<body>
-  <div class="flex justify-center items-center h-screen">
+<body class="bg-linear-to-r from-slate-900 to-slate-800">
+  <div class="flex justify-between h-[10vh]">
+    <div>
+      <button id="number-of-players"></button>
+      <button id="difficulty"></button>
+    </div>
+    <div>
+      <button id="music"></button>
+      <button id="config"></button>
+    </div>
+  </div>
+  <div class="flex flex-col justify-center items-center h-[90vh] ">
+    <!-- Colocar aqui uma div para o placar -->
     <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
-      <button id="s0" class="relative border-r border-b border-black w-full flex justify-center items-center"></button>
-      <button id="s1" class="relative border-r border-b border-l border-black w-full flex justify-center items-center"></button>
-      <button id="s2" class="relative border-l border-b border-black w-full flex justify-center items-center"></button>
-      <button id="s3" class="relative border-r border-b border-t border-black w-full flex justify-center items-center"></button>
-      <button id="s4" class="relative border-r border-b border-l border-t border-black w-full flex justify-center items-center"></button>
-      <button id="s5" class="relative border-l border-b border-t border-black w-full flex justify-center items-center"></button>
-      <button id="s6" class="relative border-r border-t border-black w-full flex justify-center items-center"></button>
-      <button id="s7" class="relative border-r border-t border-l border-black w-full flex justify-center items-center"></button>
-      <button id="s8" class="relative border-l border-t border-black w-full flex justify-center items-center"></button>
+      <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s2" class="relative border-l-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s3" class="relative border-r-2 border-b-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s4" class="relative border-r-2 border-b-2 border-l-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s5" class="relative border-l-2 border-b-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s6" class="relative border-r-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s7" class="relative border-r-2 border-t-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s8" class="relative border-l-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
     </div>
   </div>
   <script src="./src/main.js"></script>
