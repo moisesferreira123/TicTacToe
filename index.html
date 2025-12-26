@@ -7,6 +7,15 @@
   <title>Jogo da Velha</title>
 </head>
 <body class="bg-linear-to-r from-slate-900 to-slate-800">
+  <div id="end-modal"  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="w-100 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
+      <h1 class="text-5xl font-semibol"></h1>
+      <div class="w-full flex justify-center gap-6">
+        <button id="restart-game" class="bg-red-500 px-5 py-3 text-white rounded-xl hover:opacity-80 hover:cursor-pointer">Recomeçar Jogo</button>
+        <button id="new-match" class="bg-green-600 w-40 px-5 py-3 text-white rounded-xl hover:opacity-80 hover:cursor-pointer">Nova Partida</button>
+      </div>
+    </div>
+  </div>
   <div class="flex justify-between h-[10vh]">
     <div>
       <button id="number-of-players"></button>
@@ -18,7 +27,6 @@
     </div>
   </div>
   <div class="flex flex-col justify-center items-center h-[90vh] ">
-    <!-- Colocar aqui uma div para o placar -->
     <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
       <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>

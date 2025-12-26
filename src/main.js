@@ -1,8 +1,16 @@
 const board = document.getElementById("board");
-let playerX = true;
+const endModal = document.getElementById("end-modal");
+
+let initialPlayerX = true;
+let playerX = initialPlayerX;
+let xScore = 0;
+let oScore = 0;
 const state = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
+
+const restartGame = document.getElementById("restart-game");
+const newMatch = document.getElementById("new-match");
 
 const victoryWays = [
   // Horizontais
@@ -53,10 +61,20 @@ function checkVictory() {
   return false;
 }
 
+function draw() {
+  draw++;
+  setTimeout(showDrawModal, 500);
+}
+
 function win() {
   let colorLine;
-  if(playerX) colorLine = "bg-red-500";
-  else colorLine = "bg-green-500";
+  if(playerX) { 
+    colorLine = "bg-red-500";
+    xScore++;
+  } else { 
+    colorLine = "bg-green-500";
+    oScore++;
+  }
 
   const victoryLine = document.createElement("div");
   victoryLine.classList.add("absolute", colorLine, "h-[3%]", "rounded-full", "z-10", "animate-victory-line");
@@ -94,8 +112,61 @@ function win() {
     i0.classList.remove("animate-pop-in-victory");
     i1.classList.remove("animate-pop-in-victory");
     i2.classList.remove("animate-pop-in-victory");
-
+    showWinModal();
   }, 2500);
+}
+
+function showWinModal() {
+  const h1 = endModal.querySelector("h1");
+  if(playerX) {
+    h1.innerText = "X Venceu!";
+    h1.classList.remove("text-green-700", "text-gray-500");
+    h1.classList.add("text-red-600");
+  } else {
+    h1.innerText = "O Venceu!"
+    h1.classList.remove("text-red-600", "text-gray-500");
+    h1.classList.add("text-green-700");
+  }
+  endModal.classList.remove("hidden");
+  endModal.classList.add("flex");
+}
+
+function showDrawModal() {
+  const h1 = endModal.querySelector("h1");
+  h1.innerText = "Empate!";
+  h1.classList.remove("text-green-700", "text-red-600");
+  h1.classList.add("text-gray-500");
+  endModal.classList.remove("hidden");
+  endModal.classList.add("flex");
+}
+
+function resetMatch() {
+  for(const i in state) {
+    state[i] = "";
+  }
+
+  playerX = initialPlayerX;
+  moves = 0;
+  victoryIndices = [];
+
+  resetMatchHTML();
+
+  endModal.classList.remove("flex");
+  endModal.classList.add("hidden");
+}
+
+function resetMatchHTML() {
+  board.innerHTML = `
+      <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s2" class="relative border-l-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s3" class="relative border-r-2 border-b-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s4" class="relative border-r-2 border-b-2 border-l-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s5" class="relative border-l-2 border-b-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s6" class="relative border-r-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s7" class="relative border-r-2 border-t-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
+      <button id="s8" class="relative border-l-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
+    `;
 }
 
 board.addEventListener('click', event => {
@@ -137,9 +208,22 @@ board.addEventListener('click', event => {
 
   if(checkVictory()) {
     win();
+  } else {
+    playerX = !playerX;
+    moves++;
   }
 
-  moves++;
-  playerX = !playerX;
+  if(moves === 9) {
+    draw();
+  }
+});
 
+restartGame.addEventListener("click", () => {
+  initialPlayerX = true;
+  resetMatch();
+});
+
+newMatch.addEventListener("click", () => {
+  initialPlayerX = !initialPlayerX;
+  resetMatch();
 });
