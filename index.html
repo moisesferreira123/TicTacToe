@@ -16,17 +16,38 @@
       </div>
     </div>
   </div>
-  <div class="flex justify-between h-[10vh]">
-    <div>
-      <button id="number-of-players"></button>
-      <button id="difficulty"></button>
+  <div class="flex justify-between h-[10vh] px-8 py-4">
+    <div class="flex items-center gap-3">
+      <button id="number-of-players" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="users-round"></i></button>
+      <div class="relative text-left">
+        <button id="difficulty" class="bg-indigo-950 text-indigo-100 pl-2 pr-3 py-0.5 w-29 text-left flex items-center gap-1 rounded-sm hover:cursor-pointer hover:bg-indigo-900">
+          <i data-lucide="chevron-down" class="size-4"></i>
+          <p>Médio</p>
+        </button>
+        <ul class="absolute left-0 mt-1 space-y-0.5 w-35  bg-indigo-950 text-indigo-100 rounded-sm shadow-xl z-50 hidden">
+          <li id="easy" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer rounded-t-sm">
+            <p>Fácil</p>
+          </li>
+          <li id="medium" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer">
+            <p>Médio</p>
+            <i data-lucide="check" class="size-5"></i>
+          </li>
+          <li id="hard" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer">
+            <p>Difícil</p>
+          </li>
+          <li id="impossible" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer rounded-b-sm">
+            <p>Impossível</p>  
+          </li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <button id="music"></button>
-      <button id="config"></button>
+    <div class="flex items-center gap-3">
+      <button id="music" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="volume-2"></i></button>
+      <button id="config" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="settings"></i></button>
     </div>
   </div>
   <div class="flex flex-col justify-center items-center h-[90vh] ">
+    <!-- Colocar placar aqui -->
     <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
       <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
@@ -41,5 +62,10 @@
   </div>
   <script src="./src/main.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
+
+<!-- <i data-lucide="user-round"></i> -->

@@ -3,7 +3,7 @@
 @theme {
   --animate-pop-in: pop-in 0.3s ease-out forwards;
   --animate-victory-line: victory-line 0.5s linear forwards; 
-  --animate-pop-in-victory: pop-in-victory 1s ease-out forwards;
+  --animate-pop-in-victory: pop-in-victory 1s linear forwards;
 
   @keyframes pop-in {
     0% {
