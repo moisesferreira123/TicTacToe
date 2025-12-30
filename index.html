@@ -18,13 +18,13 @@
   </div>
   <div class="flex justify-between px-8 py-4">
     <div class="flex items-center gap-3">
-      <button id="number-of-players" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="users-round"></i></button>
+      <button id="number-of-players" class="one-player bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="user-round"></i></button>
       <div class="relative text-left">
-        <button id="difficulty" class="bg-indigo-950 text-indigo-100 pl-2 pr-3 py-0.5 w-29 text-left flex items-center gap-1 rounded-sm hover:cursor-pointer hover:bg-indigo-900">
+        <button id="difficulty" class="bg-indigo-950 text-indigo-100 pl-2 pr-3 py-0.5 w-30 text-left flex items-center gap-1 rounded-sm hover:cursor-pointer hover:bg-indigo-900">
           <i data-lucide="chevron-down" class="size-4"></i>
           <p>Médio</p>
         </button>
-        <ul class="absolute left-0 mt-1 space-y-0.5 w-35  bg-indigo-950 text-indigo-100 rounded-sm shadow-xl z-50 hidden">
+        <ul id="dropdown-difficulty" class="absolute left-0 mt-1 space-y-0.5 w-35  bg-indigo-950 text-indigo-100 rounded-sm shadow-xl z-50 hidden">
           <li id="easy" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer rounded-t-sm">
             <p>Fácil</p>
           </li>
@@ -46,7 +46,7 @@
       <button id="config" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="settings"></i></button>
     </div>
   </div>
-  <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10">
+  <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10 mt-3">
     <div class="bg-red-500 p-6 w-35 text-center text-white font-medium">
       <p>Jogador X</p>
       <p id="x-score" class="text-3xl">0</p>

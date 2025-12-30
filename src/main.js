@@ -1,11 +1,24 @@
+// Elements
 const board = document.getElementById("board");
 const endModal = document.getElementById("end-modal");
+const dropdownDifficulty = document.getElementById("dropdown-difficulty");
+
+// Buttons
 const restartGame = document.getElementById("restart-game");
 const newMatch = document.getElementById("new-match");
+const nPlayers = document.getElementById("number-of-players");
+const difficulty = document.getElementById("difficulty");
+const easy = document.getElementById("easy");
+const medium = document.getElementById("medium");
+const hard = document.getElementById("hard");
+const impossible = document.getElementById("impossible");
+const volume = document.getElementById("volume");
+const config = document.getElementById("config");
+
+// Score
 const xScoreHTML = document.getElementById("x-score");
 const drayScoreHTML = document.getElementById("draw-score");
 const oScoreHTML = document.getElementById("o-score");
-
 
 let initialPlayerX = true;
 let playerX = initialPlayerX;
@@ -15,6 +28,7 @@ let draws = 0;
 const state = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
+let difficultyGame = "medium";
 
 
 const victoryWays = [
@@ -191,6 +205,12 @@ function resetScore() {
   oScoreHTML.innerText = `${oScore}`;
 }
 
+function restartGameFunc() {
+  initialPlayerX = true;
+  resetMatch();
+  resetScore();
+}
+
 board.addEventListener('click', event => {
   const button = event.target.closest("button");
   if(!button) return;
@@ -241,12 +261,87 @@ board.addEventListener('click', event => {
 });
 
 restartGame.addEventListener("click", () => {
-  initialPlayerX = true;
-  resetMatch();
-  resetScore();
+  restartGameFunc();
 });
 
 newMatch.addEventListener("click", () => {
   initialPlayerX = !initialPlayerX;
   resetMatch();
+});
+
+nPlayers.addEventListener("click", () => {
+  if(nPlayers.classList.contains("one-player")) {
+    difficulty.classList.add("hidden");
+    nPlayers.innerHTML = `<i data-lucide="users-round"></i>`;
+    nPlayers.classList.remove("one-player");
+  } else {
+    difficulty.classList.remove("hidden");
+    nPlayers.innerHTML = `<i data-lucide="user-round"></i>`;
+    nPlayers.classList.add("one-player");
+  }
+
+  lucide.createIcons()
+
+  restartGameFunc();
+});
+
+// Serve para fechar o dropdown da dificuldade quando se aperta fora dele
+window.addEventListener("click", (event) => {
+  const dropdownDifficultyIsOpen = !dropdownDifficulty.classList.contains("hidden");
+
+  if(dropdownDifficultyIsOpen && !difficulty.contains(event.target) && !dropdownDifficulty.contains(event.target)) {
+    dropdownDifficulty.classList.add("hidden");
+  }
+});
+
+difficulty.addEventListener("click", () => {
+  if(dropdownDifficulty.classList.contains("hidden")) {
+    dropdownDifficulty.classList.remove("hidden");
+  } else {
+    dropdownDifficulty.classList.add("hidden");
+  }
+});
+
+dropdownDifficulty.addEventListener("click", (event) => {
+  const liDifficulty = event.target.closest("li");
+  const difficultyText = document.querySelector("#difficulty p");
+
+  if(difficultyGame === liDifficulty.id) return;
+
+  const svg = document.querySelector(`#${difficultyGame} svg`);
+  svg.remove();
+
+  if(liDifficulty.id === "easy") {
+    difficultyGame = "easy";
+    difficultyText.innerText = "Fácil";
+    liDifficulty.innerHTML = `
+      <p>Fácil</p>
+      <i data-lucide="check" class="size-5"></i>
+    `;
+  } else if(liDifficulty.id === "medium") {
+    difficultyGame = "medium";
+    difficultyText.innerText = "Médio";
+    liDifficulty.innerHTML = `
+      <p>Médio</p>
+      <i data-lucide="check" class="size-5"></i>
+    `;
+  } else if(liDifficulty.id === "hard") {
+    difficultyGame = "hard";
+    difficultyText.innerText = "Difícil";
+    liDifficulty.innerHTML = `
+      <p>Difícil</p>
+      <i data-lucide="check" class="size-5"></i>
+    `;
+  } else if(liDifficulty.id === "impossible") {
+    difficultyGame = "impossible";
+    difficultyText.innerText = "Impossível";
+    liDifficulty.innerHTML = `
+      <p>Impossível</p>
+      <i data-lucide="check" class="size-5"></i>
+    `;
+  }
+
+  lucide.createIcons();
+  dropdownDifficulty.classList.add("hidden");
+  restartGameFunc();
 });
