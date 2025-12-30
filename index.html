@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <div class="flex justify-between h-[10vh] px-8 py-4">
+  <div class="flex justify-between px-8 py-4">
     <div class="flex items-center gap-3">
       <button id="number-of-players" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="users-round"></i></button>
       <div class="relative text-left">
@@ -42,12 +42,25 @@
       </div>
     </div>
     <div class="flex items-center gap-3">
-      <button id="music" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="volume-2"></i></button>
+      <button id="volume" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="volume-2"></i></button>
       <button id="config" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="settings"></i></button>
     </div>
   </div>
-  <div class="flex flex-col justify-center items-center h-[90vh] ">
-    <!-- Colocar placar aqui -->
+  <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10">
+    <div class="bg-red-500 p-6 w-35 text-center text-white font-medium">
+      <p>Jogador X</p>
+      <p id="x-score" class="text-3xl">0</p>
+    </div>
+    <div class="bg-gray-500 p-6 w-35 text-center text-white font-medium">
+      <p>Empate</p>
+      <p id="draw-score" class="text-3xl">0</p>
+    </div>
+    <div class="bg-green-500 p-6 w-35 text-center text-white font-medium">
+      <p>Jogador O</p>
+      <p id="o-score" class="text-3xl">0</p>
+    </div>
+  </div>
+  <div class="flex flex-col justify-center items-center ">
     <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
       <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>

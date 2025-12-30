@@ -1,16 +1,21 @@
 const board = document.getElementById("board");
 const endModal = document.getElementById("end-modal");
+const restartGame = document.getElementById("restart-game");
+const newMatch = document.getElementById("new-match");
+const xScoreHTML = document.getElementById("x-score");
+const drayScoreHTML = document.getElementById("draw-score");
+const oScoreHTML = document.getElementById("o-score");
+
 
 let initialPlayerX = true;
 let playerX = initialPlayerX;
 let xScore = 0;
 let oScore = 0;
+let draws = 0;
 const state = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
 
-const restartGame = document.getElementById("restart-game");
-const newMatch = document.getElementById("new-match");
 
 const victoryWays = [
   // Horizontais
@@ -62,7 +67,7 @@ function checkVictory() {
 }
 
 function draw() {
-  draw++;
+  draws++;
   setTimeout(showDrawModal, 500);
 }
 
@@ -122,10 +127,16 @@ function showWinModal() {
     h1.innerText = "X Venceu!";
     h1.classList.remove("text-green-700", "text-gray-500");
     h1.classList.add("text-red-600");
+    setTimeout(() => {
+      xScoreHTML.innerText  = `${xScore}`;
+    }, 10);
   } else {
     h1.innerText = "O Venceu!"
     h1.classList.remove("text-red-600", "text-gray-500");
     h1.classList.add("text-green-700");
+    setTimeout(() => {
+      oScoreHTML.innerText  = `${oScore}`;
+    }, 10);
   }
   endModal.classList.remove("hidden");
   endModal.classList.add("flex");
@@ -136,6 +147,7 @@ function showDrawModal() {
   h1.innerText = "Empate!";
   h1.classList.remove("text-green-700", "text-red-600");
   h1.classList.add("text-gray-500");
+  drayScoreHTML.innerText = `${draws}`;
   endModal.classList.remove("hidden");
   endModal.classList.add("flex");
 }
@@ -167,6 +179,16 @@ function resetMatchHTML() {
       <button id="s7" class="relative border-r-2 border-t-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s8" class="relative border-l-2 border-t-2 border-indigo-400 w-full flex justify-center items-center"></button>
     `;
+}
+
+function resetScore() {
+  xScore = 0;
+  draws = 0;
+  oScore = 0;
+
+  xScoreHTML.innerText = `${xScore}`;
+  drayScoreHTML.innerText = `${draws}`;
+  oScoreHTML.innerText = `${oScore}`;
 }
 
 board.addEventListener('click', event => {
@@ -221,6 +243,7 @@ board.addEventListener('click', event => {
 restartGame.addEventListener("click", () => {
   initialPlayerX = true;
   resetMatch();
+  resetScore();
 });
 
 newMatch.addEventListener("click", () => {
