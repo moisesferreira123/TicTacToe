@@ -20,8 +20,20 @@ const xScoreHTML = document.getElementById("x-score");
 const drayScoreHTML = document.getElementById("draw-score");
 const oScoreHTML = document.getElementById("o-score");
 
+// Sound
+const winSound = new Audio("./src/assets/270402__littlerobotsoundfactory__jingle_win_00.wav");
+const loseSound = new Audio("./src/assets/game-over-401236.mp3");
+const drawSound = new Audio("./src/assets/270403__littlerobotsoundfactory__jingle_lose_00.wav");
+
+winSound.volume = 0.8;
+loseSound.volume = 0.8;
+drawSound.volume = 0.8;
+
+// Variables
 let initialPlayerX = true;
 let playerX = initialPlayerX;
+let onePlayer = true;
+let playerIsX = true;
 let xScore = 0;
 let oScore = 0;
 let draws = 0;
@@ -29,7 +41,7 @@ const state = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
 let difficultyGame = "medium";
-
+let isMuted = false;
 
 const victoryWays = [
   // Horizontais
@@ -44,6 +56,18 @@ const victoryWays = [
   { combo: [0, 4, 8], style: "top: 49%; left: -20.5%; width: 142%; rotate: 45deg;" },
   { combo: [2, 4, 6], style: "top: 49%; left: -21.58%; width: 142%; rotate: 135deg;" },
 ];
+
+function playSound(audio) {
+  if(isMuted) return;
+  audio.currentTime = 0;
+  audio.play();
+}
+
+function stopAudios() {
+  winSound.pause();
+  loseSound.pause();
+  drawSound.pause();
+}
 
 function checkVictory() {
   // Verificando vitória nas linhas
@@ -141,16 +165,32 @@ function showWinModal() {
     h1.innerText = "X Venceu!";
     h1.classList.remove("text-green-700", "text-gray-500");
     h1.classList.add("text-red-600");
+
     setTimeout(() => {
       xScoreHTML.innerText  = `${xScore}`;
     }, 10);
+
+    if(onePlayer) {
+      if(playerIsX) playSound(winSound);
+      else playSound(loseSound);
+    } else {
+      playSound(winSound);
+    }
   } else {
     h1.innerText = "O Venceu!"
     h1.classList.remove("text-red-600", "text-gray-500");
     h1.classList.add("text-green-700");
+    
     setTimeout(() => {
       oScoreHTML.innerText  = `${oScore}`;
     }, 10);
+
+    if(onePlayer) {
+      if(!playerIsX) playSound(winSound);
+      else playSound(loseSound);
+    } else {
+      playSound(winSound);
+    }
   }
   endModal.classList.remove("hidden");
   endModal.classList.add("flex");
@@ -261,23 +301,25 @@ board.addEventListener('click', event => {
 });
 
 restartGame.addEventListener("click", () => {
+  stopAudios();
   restartGameFunc();
 });
 
 newMatch.addEventListener("click", () => {
+  stopAudios();
   initialPlayerX = !initialPlayerX;
   resetMatch();
 });
 
 nPlayers.addEventListener("click", () => {
-  if(nPlayers.classList.contains("one-player")) {
+  if(onePlayer) {
     difficulty.classList.add("hidden");
     nPlayers.innerHTML = `<i data-lucide="users-round"></i>`;
-    nPlayers.classList.remove("one-player");
+    onePlayer = false;
   } else {
     difficulty.classList.remove("hidden");
     nPlayers.innerHTML = `<i data-lucide="user-round"></i>`;
-    nPlayers.classList.add("one-player");
+    onePlayer = true;
   }
 
   lucide.createIcons()
