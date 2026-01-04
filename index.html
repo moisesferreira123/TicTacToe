@@ -16,6 +16,17 @@
       </div>
     </div>
   </div>
+  <!-- <div id="config-modal"  class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="relative w-75 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
+      <h1 class="absolute -top-1 -translate-y-1/2 text-3xl font-semibol px-4 py-2 bg-orange-900 text-white rounded-full">Configurações</h1>
+      <div class="w-full flex flex-col items-center justify-center gap-2.5">
+        <button id="restart-config" class="bg-orange-600 mt-2 px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-90 hover:cursor-pointer">Continuar</button>
+        <button id="new-match-config" class="bg-orange-600 px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-90 hover:cursor-pointer">Nova Partida</button>
+        <button id="change-piece-config" class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-90 hover:cursor-pointer">Jogar com X</button>
+        <button id="credits-config" class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-90 hover:cursor-pointer">Créditos</button>
+      </div>
+    </div>
+  </div> -->
   <div class="flex justify-between px-8 py-4">
     <div class="flex items-center gap-3">
       <button id="number-of-players" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="user-round"></i></button>
@@ -48,7 +59,7 @@
   </div>
   <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10 mt-3">
     <div class="bg-red-500 p-6 w-35 text-center text-white font-medium">
-      <p>Você (X)</p>
+      <p id="x-score-name">Você (X)</p>
       <p id="x-score" class="text-3xl">0</p>
     </div>
     <div class="bg-gray-500 p-6 w-35 text-center text-white font-medium">
@@ -56,7 +67,7 @@
       <p id="draw-score" class="text-3xl">0</p>
     </div>
     <div class="bg-green-500 p-6 w-35 text-center text-white font-medium">
-      <p>Máquina (O)</p>
+      <p id="o-score-name">Máquina (O)</p>
       <p id="o-score" class="text-3xl">0</p>
     </div>
   </div>
@@ -80,5 +91,3 @@
   </script>
 </body>
 </html>
-
-<!-- <i data-lucide="user-round"></i> -->

@@ -24,10 +24,16 @@ const oScoreHTML = document.getElementById("o-score");
 const winSound = new Audio("./src/assets/270402__littlerobotsoundfactory__jingle_win_00.wav");
 const loseSound = new Audio("./src/assets/game-over-401236.mp3");
 const drawSound = new Audio("./src/assets/270403__littlerobotsoundfactory__jingle_lose_00.wav");
+const xSound = new Audio("./src/assets/107140__bubaproducer__button-21.wav");
+const oSound = new Audio("./src/assets/107151__bubaproducer__button-4.wav");
+const buttonSound = new Audio("./src/assets/107155__bubaproducer__button-8.wav");
 
 winSound.volume = 0.8;
-loseSound.volume = 0.8;
+loseSound.volume = 1;
 drawSound.volume = 0.8;
+xSound.volume = 1;
+oSound.volume = 1;
+buttonSound.volume = 0.8;
 
 // Variables
 let initialPlayerX = true;
@@ -204,6 +210,7 @@ function showDrawModal() {
   drayScoreHTML.innerText = `${draws}`;
   endModal.classList.remove("hidden");
   endModal.classList.add("flex");
+  playSound(drawSound)
 }
 
 function resetMatch() {
@@ -251,6 +258,11 @@ function restartGameFunc() {
   resetScore();
 }
 
+function closeConfigModal() {
+  const configModal = document.getElementById("config-modal");
+  configModal.remove();
+}
+
 board.addEventListener('click', event => {
   const button = event.target.closest("button");
   if(!button) return;
@@ -274,12 +286,14 @@ board.addEventListener('click', event => {
     height = "h-full";
     width = "w-full";
     state[square] = "X";
+    playSound(xSound);
   } else {
     symbol="circle";
     symbolColor = "text-green-500";
     height = "h-[80%]";
     width = "w-[80%]";
     state[square] = "O";
+    playSound(oSound);
   }
 
   button.innerHTML = `
@@ -303,12 +317,14 @@ board.addEventListener('click', event => {
 restartGame.addEventListener("click", () => {
   stopAudios();
   restartGameFunc();
+  playSound(buttonSound);
 });
 
 newMatch.addEventListener("click", () => {
   stopAudios();
   initialPlayerX = !initialPlayerX;
   resetMatch();
+  playSound(buttonSound);
 });
 
 nPlayers.addEventListener("click", () => {
@@ -325,6 +341,7 @@ nPlayers.addEventListener("click", () => {
   lucide.createIcons()
 
   restartGameFunc();
+  playSound(buttonSound);
 });
 
 // Serve para fechar o dropdown da dificuldade quando se aperta fora dele
@@ -342,6 +359,8 @@ difficulty.addEventListener("click", () => {
   } else {
     dropdownDifficulty.classList.add("hidden");
   }
+
+  playSound(buttonSound);
 });
 
 dropdownDifficulty.addEventListener("click", (event) => {
@@ -386,4 +405,72 @@ dropdownDifficulty.addEventListener("click", (event) => {
   lucide.createIcons();
   dropdownDifficulty.classList.add("hidden");
   restartGameFunc();
+
+  playSound(buttonSound);
 });
+
+volume.addEventListener("click", () => { 
+  if(isMuted) volume.innerHTML = `<i data-lucide="volume-2"></i>`;
+  else volume.innerHTML = `<i data-lucide="volume-x"></i>`;
+  isMuted = !isMuted;
+  if(!isMuted) playSound(buttonSound);
+
+  lucide.createIcons();
+});
+
+config.addEventListener("click", () => {
+  const body = document.querySelector("body");
+  const config = document.createElement("div");
+  config.id = "config-modal";
+  config.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
+  config.innerHTML = `
+      <div class="relative w-75 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
+        <h1 class="absolute -top-1 -translate-y-1/2 text-3xl font-semibol px-4 py-2 bg-orange-900 text-white rounded-full">Configurações</h1>
+        <div class="w-full flex flex-col items-center justify-center gap-2.5">
+          <button id="restart-config" class="bg-orange-600 mt-2 px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Continuar</button>
+          <button id="restart-match-config" class="bg-orange-600  px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Reiniciar Partida</button>
+          <button id="change-piece-config" ${onePlayer ? "" : "disabled"} class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer disabled:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed">Jogar com ${playerIsX ? "O" : "X"}</button>
+          <button id="credits-config" class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Créditos</button>
+        </div>
+      </div>
+  `;
+  body.appendChild(config);
+
+  playSound(buttonSound);
+});
+
+window.addEventListener("click", (event) =>  {
+  const button = event.target.closest("button");
+  if(!button) return;
+
+  if(button.id === "restart-config") {
+    closeConfigModal();
+    playSound(buttonSound);
+  } else if(button.id === "restart-match-config") {
+    resetMatch();
+    closeConfigModal();
+    playSound(buttonSound);
+  } else if(button.id === "change-piece-config") {
+    const xScoreName = document.getElementById("x-score-name");
+    const oScoreName = document.getElementById("o-score-name");
+    if(playerIsX) {
+      xScoreName.innerText = "Máquina (X)";
+      oScoreName.innerText = "Você (O)";
+    } else {
+      xScoreName.innerText = "Você (X)";
+      oScoreName.innerText = "Máquina (O)";
+    }
+    playerIsX = !playerIsX;
+    restartGameFunc();
+    closeConfigModal();
+    playSound(buttonSound);
+  } else if(button.id === "credits-config") {
+    // TODO: Falta colocar os créditos
+    playSound(buttonSound);
+  }
+
+});
+
+// TODO: Coisas que faltam:
+// COlocar a parte dos créditos
+// Colocar a parte de jogar sozinho
