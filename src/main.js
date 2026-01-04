@@ -258,9 +258,58 @@ function restartGameFunc() {
   resetScore();
 }
 
+function openConfigModal() {
+  const body = document.querySelector("body");
+  const config = document.createElement("div");
+  config.id = "config-modal";
+  config.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
+  config.innerHTML = `
+      <div class="relative w-75 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
+        <h1 class="absolute -top-1 -translate-y-1/2 text-3xl font-semibol px-4 py-2 bg-orange-900 text-white rounded-full">Configurações</h1>
+        <div class="w-full flex flex-col items-center justify-center gap-2.5">
+          <button id="restart-config" class="bg-orange-600 mt-2 px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Continuar</button>
+          <button id="restart-match-config" class="bg-orange-600  px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Reiniciar Partida</button>
+          <button id="change-piece-config" ${onePlayer ? "" : "disabled"} class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer disabled:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed">Jogar com ${playerIsX ? "O" : "X"}</button>
+          <button id="credits-config" class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Créditos</button>
+        </div>
+      </div>
+  `;
+  body.appendChild(config);
+}
+
 function closeConfigModal() {
   const configModal = document.getElementById("config-modal");
   configModal.remove();
+}
+
+function openCreditsModal() {
+  const body = document.querySelector("body");
+  const credits = document.createElement("div");
+  credits.id = "credits-modal";
+  credits.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
+  credits.innerHTML = `
+      <div class="relative w-100 h-100 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center flex-col">
+      <h1 class="absolute -top-1 -translate-y-1/2 text-3xl font-semibol px-4 py-2 bg-orange-900 text-white rounded-full">Créditos</h1>
+      <div class="w-full flex flex-col justify-center items-center gap-2 mt-4">
+        <div class="space-y-1">
+          <p class="text-center w-full px-3 text-sm mb-2">Criado por: <a a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://github.com/moisesferreira123"> Moisés Ferreira de Lima</a></p>
+          <p class=" px-3 text-sm">Música de vitória: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/LittleRobotSoundFactory/sounds/270402/">Jingle_Win_00.wav</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/LittleRobotSoundFactory/">LittleRobotSoundFactory</a> | License: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a></p>
+          <p class=" px-3 text-sm">Música de empate: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/LittleRobotSoundFactory/sounds/270403/">Jingle_Lose_00.wav</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/LittleRobotSoundFactory/">LittleRobotSoundFactory</a> | License: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a></p>
+          <p class=" px-3 text-sm">Música de derrota: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://pixabay.com/pt/sound-effects/game-over-401236/">game-over-401236</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://pixabay.com/pt/users/calango_fx_official-52172903/">calango_fx_official</a> via <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://pixabay.com/">pixabay</a></p>
+          <p class=" px-3 text-sm">Som ao colocar o X: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/sounds/107140/">button 21.wav</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/">bubaproducer</a> | License: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a></p>
+          <p class=" px-3 text-sm">Som ao colocar o O: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/sounds/107151/">button 4.wav</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/">bubaproducer</a> | License: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a></p>
+          <p class=" px-3 text-sm">Som de botões: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/sounds/107155/">button 8.wav</a> by <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://freesound.org/people/bubaproducer/">bubaproducer</a> | License: <a target="_blank" rel="noopener noreferrer" class="text-blue-600 underline" href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a></p>
+        </div>
+        <button id="return-to-config" class="bg-orange-600 px-5 py-2.5 w-51  font-medium text-white rounded-xl hover:opacity-90 hover:cursor-pointer">Retornar</button>
+      </div>
+    </div>
+  `;
+  body.appendChild(credits);
+}
+
+function closeCreditsModal() {
+  const creditsModal = document.getElementById("credits-modal");
+  creditsModal.remove();
 }
 
 board.addEventListener('click', event => {
@@ -419,23 +468,7 @@ volume.addEventListener("click", () => {
 });
 
 config.addEventListener("click", () => {
-  const body = document.querySelector("body");
-  const config = document.createElement("div");
-  config.id = "config-modal";
-  config.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
-  config.innerHTML = `
-      <div class="relative w-75 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
-        <h1 class="absolute -top-1 -translate-y-1/2 text-3xl font-semibol px-4 py-2 bg-orange-900 text-white rounded-full">Configurações</h1>
-        <div class="w-full flex flex-col items-center justify-center gap-2.5">
-          <button id="restart-config" class="bg-orange-600 mt-2 px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Continuar</button>
-          <button id="restart-match-config" class="bg-orange-600  px-5 py-2.5 w-51 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Reiniciar Partida</button>
-          <button id="change-piece-config" ${onePlayer ? "" : "disabled"} class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer disabled:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed">Jogar com ${playerIsX ? "O" : "X"}</button>
-          <button id="credits-config" class="bg-orange-600 w-51 px-5 py-2.5 font-medium text-white rounded-xl hover:opacity-85 hover:cursor-pointer">Créditos</button>
-        </div>
-      </div>
-  `;
-  body.appendChild(config);
-
+  openConfigModal();
   playSound(buttonSound);
 });
 
@@ -465,12 +498,16 @@ window.addEventListener("click", (event) =>  {
     closeConfigModal();
     playSound(buttonSound);
   } else if(button.id === "credits-config") {
-    // TODO: Falta colocar os créditos
+    closeConfigModal();
+    openCreditsModal();
+    playSound(buttonSound);
+  } else if(button.id === "return-to-config") {
+    closeCreditsModal();
+    openConfigModal();
     playSound(buttonSound);
   }
 
 });
 
 // TODO: Coisas que faltam:
-// COlocar a parte dos créditos
 // Colocar a parte de jogar sozinho
