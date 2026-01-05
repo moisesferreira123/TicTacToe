@@ -32,9 +32,6 @@
             <p>Médio</p>
             <i data-lucide="check" class="size-5"></i>
           </li>
-          <li id="hard" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer">
-            <p>Difícil</p>
-          </li>
           <li id="impossible" class="flex items-center justify-between px-2 py-px hover:bg-indigo-900 hover:cursor-pointer rounded-b-sm">
             <p>Impossível</p>  
           </li>
@@ -47,7 +44,7 @@
     </div>
   </div>
   <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10 mt-3">
-    <div class="bg-red-500 p-6 w-35 text-center text-white font-medium">
+    <div id="x-score-board" class="bg-red-500 p-6 w-35 text-center text-white font-medium shadow-lg shadow-red-500/70">
       <p id="x-score-name">Você (X)</p>
       <p id="x-score" class="text-3xl">0</p>
     </div>
@@ -55,7 +52,7 @@
       <p>Empate</p>
       <p id="draw-score" class="text-3xl">0</p>
     </div>
-    <div class="bg-green-500 p-6 w-35 text-center text-white font-medium">
+    <div id="o-score-board" class="bg-green-500 p-6 w-35 text-center text-white font-medium shadow-lg">
       <p id="o-score-name">Máquina (O)</p>
       <p id="o-score" class="text-3xl">0</p>
     </div>

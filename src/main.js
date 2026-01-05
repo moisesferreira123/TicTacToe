@@ -1,4 +1,5 @@
 // Elements
+const body = document.querySelector("body");
 const board = document.getElementById("board");
 const endModal = document.getElementById("end-modal");
 const dropdownDifficulty = document.getElementById("dropdown-difficulty");
@@ -10,7 +11,6 @@ const nPlayers = document.getElementById("number-of-players");
 const difficulty = document.getElementById("difficulty");
 const easy = document.getElementById("easy");
 const medium = document.getElementById("medium");
-const hard = document.getElementById("hard");
 const impossible = document.getElementById("impossible");
 const volume = document.getElementById("volume");
 const config = document.getElementById("config");
@@ -43,11 +43,12 @@ let playerIsX = true;
 let xScore = 0;
 let oScore = 0;
 let draws = 0;
-const state = ["","","","","","","","",""];
+const boardGame = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
 let difficultyGame = "medium";
 let isMuted = false;
+let computerTimerReset;
 
 const victoryWays = [
   // Horizontais
@@ -78,8 +79,8 @@ function stopAudios() {
 function checkVictory() {
   // Verificando vitória nas linhas
   for(let i=0;i<9;i+=3) {
-    if(state[i] === "") continue;
-    if(state[i] === state[i+1] && state[i+1] === state[i+2]) {
+    if(boardGame[i] === "") continue;
+    if(boardGame[i] === boardGame[i+1] && boardGame[i+1] === boardGame[i+2]) {
       victoryIndices.push(i, i+1, i+2);
       return true;
     }
@@ -87,22 +88,22 @@ function checkVictory() {
 
   // Verificando vitórias nas colunas
   for(let i=0;i<3;i++) {
-    if(state[i] === "") continue;
-    if(state[i] === state[i+3] && state[i+3] === state[i+6]) {
+    if(boardGame[i] === "") continue;
+    if(boardGame[i] === boardGame[i+3] && boardGame[i+3] === boardGame[i+6]) {
       victoryIndices.push(i, i+3, i+6);
       return true;
     }
   }
 
   // Verificando vitórias nas diagonais
-  if(state[4] === "") return false;
+  if(boardGame[4] === "") return false;
 
-  if(state[0] === state[4] && state[4] === state[8]) {
+  if(boardGame[0] === boardGame[4] && boardGame[4] === boardGame[8]) {
     victoryIndices.push(0, 4, 8);
     return true;
   }
 
-  if(state[2] === state[4] && state[4] === state[6]) {
+  if(boardGame[2] === boardGame[4] && boardGame[4] === boardGame[6]) {
     victoryIndices.push(2, 4, 6);
     return true;
   }
@@ -138,7 +139,7 @@ function win() {
   const i1 = document.querySelector(`#s${victoryIndices[1]} svg`);
   const i2 = document.querySelector(`#s${victoryIndices[2]} svg`);
 
-  board.classList.add("pointer-events-none");
+  body.classList.add("pointer-events-none");
 
   setTimeout(() => {
     board.appendChild(victoryLine);
@@ -156,7 +157,7 @@ function win() {
   }, 1500);
 
   setTimeout(() => {
-    board.classList.remove("pointer-events-none");
+    body.classList.remove("pointer-events-none");
     victoryLine.classList.remove("animate-pop-in-victory");
     i0.classList.remove("animate-pop-in-victory");
     i1.classList.remove("animate-pop-in-victory");
@@ -214,18 +215,39 @@ function showDrawModal() {
 }
 
 function resetMatch() {
-  for(const i in state) {
-    state[i] = "";
+  for(const i in boardGame) {
+    boardGame[i] = "";
   }
 
   playerX = initialPlayerX;
   moves = 0;
   victoryIndices = [];
 
+  if(playerX) {
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.add("shadow-red-500/70");
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.remove("shadow-green-500/70");
+  } else {
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.add("shadow-green-500/70");
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.remove("shadow-red-500/70");
+  }
+
   resetMatchHTML();
 
   endModal.classList.remove("flex");
   endModal.classList.add("hidden");
+
+  if(onePlayer) {
+    if((initialPlayerX && !playerIsX) || (!initialPlayerX && playerIsX)) {
+      board.classList.add("pointer-events-none");
+      computerTimerReset = setTimeout(() => {
+        computerMove();
+      }, 800);
+    } 
+  }
 }
 
 function resetMatchHTML() {
@@ -259,7 +281,6 @@ function restartGameFunc() {
 }
 
 function openConfigModal() {
-  const body = document.querySelector("body");
   const config = document.createElement("div");
   config.id = "config-modal";
   config.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
@@ -283,7 +304,6 @@ function closeConfigModal() {
 }
 
 function openCreditsModal() {
-  const body = document.querySelector("body");
   const credits = document.createElement("div");
   credits.id = "credits-modal";
   credits.classList.add("fixed", "inset-0", "z-50", "flex", "flex-col", "items-center", "justify-center", "bg-black/50",  "backdrop-blur-sm", "p-4");
@@ -312,6 +332,80 @@ function closeCreditsModal() {
   creditsModal.remove();
 }
 
+function easyMove() {
+  let randomPos;
+
+  do {
+    randomPos = Math.floor(Math.random()*9);
+  } while (boardGame[randomPos] !== "");
+
+  return randomPos;
+}
+
+function mediumMove() {
+
+} 
+
+function impossibleMove() {
+
+}
+
+function computerMove() {
+  if(moves === 9) return;
+
+  let move;
+  if(difficultyGame === "easy") move = easyMove();
+  else if(difficultyGame === "medium") move = mediumMove();
+  else move = impossibleMove();
+
+  console.log(move);
+  
+  const svg = document.querySelector(`.temp-animate`);
+  if(svg) {
+    svg.classList.remove('animate-pop-in');
+    svg.classList.remove('temp-animate');
+  }
+
+  const symbol = playerIsX ? "circle" : "x";
+  const symbolColor = playerIsX ? "text-green-500" : "text-red-500";
+  const height = playerIsX ? "h-[80%]" : "h-full";
+  const width = playerIsX ? "w-[80%]" : "w-full";
+  boardGame[move] = playerIsX ? "o" : "x";
+
+  const button = document.getElementById(`s${move}`);
+  console.log(button)
+
+  button.innerHTML = `
+    <i data-lucide="${symbol}" class="${symbolColor} temp-animate absolute flex justify-center items-center ${height} ${width} animate-pop-in"></i>
+  `;
+
+  lucide.createIcons();
+
+  if(checkVictory()) {
+    win();
+  } else {
+    playerX = !playerX;
+    moves++;
+  }
+
+  if(moves === 9) {
+    draw();
+  }
+
+  if(!playerX) {
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.remove("shadow-red-500/70");
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.add("shadow-green-500/70");
+  } else {
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.remove("shadow-green-500/70");
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.add("shadow-red-500/70");
+  }
+  board.classList.remove("pointer-events-none");
+}
+
 board.addEventListener('click', event => {
   const button = event.target.closest("button");
   if(!button) return;
@@ -334,14 +428,14 @@ board.addEventListener('click', event => {
     symbolColor = "text-red-500";
     height = "h-full";
     width = "w-full";
-    state[square] = "X";
+    boardGame[square] = "X";
     playSound(xSound);
   } else {
     symbol="circle";
     symbolColor = "text-green-500";
     height = "h-[80%]";
     width = "w-[80%]";
-    state[square] = "O";
+    boardGame[square] = "O";
     playSound(oSound);
   }
 
@@ -356,11 +450,30 @@ board.addEventListener('click', event => {
   } else {
     playerX = !playerX;
     moves++;
+    if(onePlayer){ 
+      board.classList.add("pointer-events-none");
+      computerTimerReset = setTimeout(() => {
+        computerMove();
+      }, 800);
+    }
   }
 
   if(moves === 9) {
     draw();
   }
+
+  if(!playerX) {
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.remove("shadow-red-500/70");
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.add("shadow-green-500/70");
+  } else {
+    const oScoreBoard = document.getElementById("o-score-board");
+    oScoreBoard.classList.remove("shadow-green-500/70");
+    const xScoreBoard = document.getElementById("x-score-board");
+    xScoreBoard.classList.add("shadow-red-500/70");
+  }
+
 });
 
 restartGame.addEventListener("click", () => {
@@ -377,6 +490,8 @@ newMatch.addEventListener("click", () => {
 });
 
 nPlayers.addEventListener("click", () => {
+  clearTimeout(computerTimerReset);
+
   if(onePlayer) {
     difficulty.classList.add("hidden");
     nPlayers.innerHTML = `<i data-lucide="users-round"></i>`;
@@ -390,6 +505,8 @@ nPlayers.addEventListener("click", () => {
   lucide.createIcons()
 
   restartGameFunc();
+
+  board.classList.remove("pointer-events-none");
   playSound(buttonSound);
 });
 
@@ -435,13 +552,6 @@ dropdownDifficulty.addEventListener("click", (event) => {
       <p>Médio</p>
       <i data-lucide="check" class="size-5"></i>
     `;
-  } else if(liDifficulty.id === "hard") {
-    difficultyGame = "hard";
-    difficultyText.innerText = "Difícil";
-    liDifficulty.innerHTML = `
-      <p>Difícil</p>
-      <i data-lucide="check" class="size-5"></i>
-    `;
   } else if(liDifficulty.id === "impossible") {
     difficultyGame = "impossible";
     difficultyText.innerText = "Impossível";
@@ -463,6 +573,12 @@ volume.addEventListener("click", () => {
   else volume.innerHTML = `<i data-lucide="volume-x"></i>`;
   isMuted = !isMuted;
   if(!isMuted) playSound(buttonSound);
+
+  const svg = document.querySelector(`.temp-animate`);
+  if(svg) {
+    svg.classList.remove('animate-pop-in');
+    svg.classList.remove('temp-animate');
+  }
 
   lucide.createIcons();
 });
