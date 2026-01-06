@@ -43,7 +43,7 @@ let playerIsX = true;
 let xScore = 0;
 let oScore = 0;
 let draws = 0;
-const boardGame = ["","","","","","","","",""];
+const gameBoard = ["","","","","","","","",""];
 let moves = 0;
 let victoryIndices = [];
 let difficultyGame = "medium";
@@ -79,8 +79,8 @@ function stopAudios() {
 function checkVictory() {
   // Verificando vitória nas linhas
   for(let i=0;i<9;i+=3) {
-    if(boardGame[i] === "") continue;
-    if(boardGame[i] === boardGame[i+1] && boardGame[i+1] === boardGame[i+2]) {
+    if(gameBoard[i] === "") continue;
+    if(gameBoard[i] === gameBoard[i+1] && gameBoard[i+1] === gameBoard[i+2]) {
       victoryIndices.push(i, i+1, i+2);
       return true;
     }
@@ -88,22 +88,22 @@ function checkVictory() {
 
   // Verificando vitórias nas colunas
   for(let i=0;i<3;i++) {
-    if(boardGame[i] === "") continue;
-    if(boardGame[i] === boardGame[i+3] && boardGame[i+3] === boardGame[i+6]) {
+    if(gameBoard[i] === "") continue;
+    if(gameBoard[i] === gameBoard[i+3] && gameBoard[i+3] === gameBoard[i+6]) {
       victoryIndices.push(i, i+3, i+6);
       return true;
     }
   }
 
   // Verificando vitórias nas diagonais
-  if(boardGame[4] === "") return false;
+  if(gameBoard[4] === "") return false;
 
-  if(boardGame[0] === boardGame[4] && boardGame[4] === boardGame[8]) {
+  if(gameBoard[0] === gameBoard[4] && gameBoard[4] === gameBoard[8]) {
     victoryIndices.push(0, 4, 8);
     return true;
   }
 
-  if(boardGame[2] === boardGame[4] && boardGame[4] === boardGame[6]) {
+  if(gameBoard[2] === gameBoard[4] && gameBoard[4] === gameBoard[6]) {
     victoryIndices.push(2, 4, 6);
     return true;
   }
@@ -215,8 +215,8 @@ function showDrawModal() {
 }
 
 function resetMatch() {
-  for(const i in boardGame) {
-    boardGame[i] = "";
+  for(const i in gameBoard) {
+    gameBoard[i] = "";
   }
 
   playerX = initialPlayerX;
@@ -337,13 +337,52 @@ function easyMove() {
 
   do {
     randomPos = Math.floor(Math.random()*9);
-  } while (boardGame[randomPos] !== "");
+  } while (gameBoard[randomPos] !== "");
 
   return randomPos;
 }
 
-function mediumMove() {
+// Lógica (Médio):
 
+//     Prioridade 1 (Vencer): Verificar se existe alguma jogada que lhe permita vencer imediatamente (completar uma linha, coluna ou diagonal). Se sim, fazer essa jogada.
+//     Prioridade 2 (Bloquear): Se não puder vencer, verificar se o jogador tem alguma jogada que lhe permita vencer na próxima rodada. Se sim, bloquear essa jogada.
+//     Prioridade 3 (Estratégica/Aleatória): Se nenhuma das prioridades anteriores for aplicável, fazer uma jogada estratégica (como ocupar o centro ou um canto) ou simplesmente jogar aleatoriamente.
+function mediumMove() {
+  const computerSymbol = playerIsX ? "o" : "x";
+
+  // Prioridade 1 (Vencer)
+  for(const victoriesPos of victoryWays) {
+    let nComputerSymbols = 0;
+    let movePos;
+    for(const pos of victoriesPos.combo) {
+      
+      if(gameBoard[pos] === computerSymbol) nComputerSymbols++;
+      else if(gameBoard[pos] === "") movePos = pos;
+      else {
+        nComputerSymbols = 0;
+        break;
+      }
+    }
+    if(nComputerSymbols === 2) return movePos;
+  }
+
+  // Prioridade 2 (Bloquear)
+  for(const victoriesPos of victoryWays) {
+    let nPlayerSymbols = 0;
+    let movePos;
+    for(const pos of victoriesPos.combo) {
+      console.log(`Teste: ${pos}`);
+      if(gameBoard[pos] === computerSymbol) {
+        nPlayerSymbols = 0;
+        break;
+      } else if(gameBoard[pos] === "") movePos = pos;
+      else nPlayerSymbols++;
+    }
+    if(nPlayerSymbols === 2) return movePos;
+  }
+
+  // Prioridade 3 (Estratégia aleatória caso não tenha como ganhar ou bloquear nessa rodada)
+  return easyMove();
 } 
 
 function impossibleMove() {
@@ -370,7 +409,7 @@ function computerMove() {
   const symbolColor = playerIsX ? "text-green-500" : "text-red-500";
   const height = playerIsX ? "h-[80%]" : "h-full";
   const width = playerIsX ? "w-[80%]" : "w-full";
-  boardGame[move] = playerIsX ? "o" : "x";
+  gameBoard[move] = playerIsX ? "o" : "x";
 
   const button = document.getElementById(`s${move}`);
   console.log(button)
@@ -428,14 +467,14 @@ board.addEventListener('click', event => {
     symbolColor = "text-red-500";
     height = "h-full";
     width = "w-full";
-    boardGame[square] = "X";
+    gameBoard[square] = "X";
     playSound(xSound);
   } else {
     symbol="circle";
     symbolColor = "text-green-500";
     height = "h-[80%]";
     width = "w-[80%]";
-    boardGame[square] = "O";
+    gameBoard[square] = "O";
     playSound(oSound);
   }
 
