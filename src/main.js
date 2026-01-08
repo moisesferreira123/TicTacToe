@@ -76,11 +76,11 @@ function stopAudios() {
   drawSound.pause();
 }
 
-function checkVictory() {
+function checkVictory(board) {
   // Verificando vitória nas linhas
   for(let i=0;i<9;i+=3) {
-    if(gameBoard[i] === "") continue;
-    if(gameBoard[i] === gameBoard[i+1] && gameBoard[i+1] === gameBoard[i+2]) {
+    if(board[i] === "") continue;
+    if(board[i] === board[i+1] && board[i+1] === board[i+2]) {
       victoryIndices.push(i, i+1, i+2);
       return true;
     }
@@ -88,22 +88,22 @@ function checkVictory() {
 
   // Verificando vitórias nas colunas
   for(let i=0;i<3;i++) {
-    if(gameBoard[i] === "") continue;
-    if(gameBoard[i] === gameBoard[i+3] && gameBoard[i+3] === gameBoard[i+6]) {
+    if(board[i] === "") continue;
+    if(board[i] === board[i+3] && board[i+3] === board[i+6]) {
       victoryIndices.push(i, i+3, i+6);
       return true;
     }
   }
 
   // Verificando vitórias nas diagonais
-  if(gameBoard[4] === "") return false;
+  if(board[4] === "") return false;
 
-  if(gameBoard[0] === gameBoard[4] && gameBoard[4] === gameBoard[8]) {
+  if(board[0] === board[4] && board[4] === board[8]) {
     victoryIndices.push(0, 4, 8);
     return true;
   }
 
-  if(gameBoard[2] === gameBoard[4] && gameBoard[4] === gameBoard[6]) {
+  if(board[2] === board[4] && board[4] === board[6]) {
     victoryIndices.push(2, 4, 6);
     return true;
   }
@@ -343,10 +343,9 @@ function easyMove() {
 }
 
 // Lógica (Médio):
-
-//     Prioridade 1 (Vencer): Verificar se existe alguma jogada que lhe permita vencer imediatamente (completar uma linha, coluna ou diagonal). Se sim, fazer essa jogada.
-//     Prioridade 2 (Bloquear): Se não puder vencer, verificar se o jogador tem alguma jogada que lhe permita vencer na próxima rodada. Se sim, bloquear essa jogada.
-//     Prioridade 3 (Estratégica/Aleatória): Se nenhuma das prioridades anteriores for aplicável, fazer uma jogada estratégica (como ocupar o centro ou um canto) ou simplesmente jogar aleatoriamente.
+// Prioridade 1 (Vencer): Verificar se existe alguma jogada que lhe permita vencer imediatamente (completar uma linha, coluna ou diagonal). Se sim, fazer essa jogada.
+// Prioridade 2 (Bloquear): Se não puder vencer, verificar se o jogador tem alguma jogada que lhe permita vencer na próxima rodada. Se sim, bloquear essa jogada.
+// Prioridade 3 (Estratégica/Aleatória): Se nenhuma das prioridades anteriores for aplicável, fazer uma jogada estratégica (como ocupar o centro ou um canto) ou simplesmente jogar aleatoriamente.
 function mediumMove() {
   const computerSymbol = playerIsX ? "o" : "x";
 
@@ -371,7 +370,6 @@ function mediumMove() {
     let nPlayerSymbols = 0;
     let movePos;
     for(const pos of victoriesPos.combo) {
-      console.log(`Teste: ${pos}`);
       if(gameBoard[pos] === computerSymbol) {
         nPlayerSymbols = 0;
         break;
@@ -385,8 +383,69 @@ function mediumMove() {
   return easyMove();
 } 
 
-function impossibleMove() {
+function possibleMoves(board) {
+  const moves = [];
+  for(const index in board) {
+    if(board[index] === "") moves.push(index);
+  }
+  return moves;
+}
 
+function moveResult(board, move, currentPlayer) {
+  const newBoard = [];
+  for(const square of board) {
+    newBoard.push(square);
+  }
+  newBoard[move] = currentPlayer;
+  return newBoard;
+}
+
+function minimax(board, isComputer, isMax) {
+  if(checkVictory(board)) {
+    victoryIndices.length = 0;
+    if(isComputer) return -1;
+    else return 1;
+  }
+  let pMoves = possibleMoves(board);
+  if(pMoves.length == 0) return 0;
+  let value;
+  let bestValue;
+  if(isMax) {
+    bestValue = -Infinity;
+    for(const move of pMoves) {
+      const newBoard = moveResult(board, move, playerIsX ? 'o' : 'x');
+      value = minimax(newBoard, false, false);
+      if(bestValue < value) {
+        bestValue = value;
+      }
+    }
+  } else {
+    bestValue = Infinity;
+    for(const move of pMoves) {
+      const newBoard = moveResult(board, move, playerIsX ? 'x' : 'o');
+      value = minimax(newBoard, true, true);
+      if(bestValue > value) {
+        bestValue = value;
+      }
+    }
+  }
+  return bestValue;
+}
+
+function impossibleMove() {
+  let pMoves = possibleMoves(gameBoard);
+  let bestMove;
+  let bestValue = -Infinity;
+  let value;
+  for(const move of pMoves) {
+    const newBoard = moveResult(gameBoard, move, playerIsX ? 'o' : 'x');
+    value = minimax(newBoard, false, false);
+    if(bestValue < value) {
+      bestValue = value;
+      bestMove = move;
+    }
+  }
+  return bestMove;
 }
 
 function computerMove() {
@@ -396,8 +455,6 @@ function computerMove() {
   if(difficultyGame === "easy") move = easyMove();
   else if(difficultyGame === "medium") move = mediumMove();
   else move = impossibleMove();
-
-  console.log(move);
   
   const svg = document.querySelector(`.temp-animate`);
   if(svg) {
@@ -412,7 +469,6 @@ function computerMove() {
   gameBoard[move] = playerIsX ? "o" : "x";
 
   const button = document.getElementById(`s${move}`);
-  console.log(button)
 
   button.innerHTML = `
     <i data-lucide="${symbol}" class="${symbolColor} temp-animate absolute flex justify-center items-center ${height} ${width} animate-pop-in"></i>
@@ -420,7 +476,7 @@ function computerMove() {
 
   lucide.createIcons();
 
-  if(checkVictory()) {
+  if(checkVictory(gameBoard)) {
     win();
   } else {
     playerX = !playerX;
@@ -467,14 +523,14 @@ board.addEventListener('click', event => {
     symbolColor = "text-red-500";
     height = "h-full";
     width = "w-full";
-    gameBoard[square] = "X";
+    gameBoard[square] = "x";
     playSound(xSound);
   } else {
     symbol="circle";
     symbolColor = "text-green-500";
     height = "h-[80%]";
     width = "w-[80%]";
-    gameBoard[square] = "O";
+    gameBoard[square] = "o";
     playSound(oSound);
   }
 
@@ -484,7 +540,7 @@ board.addEventListener('click', event => {
 
   lucide.createIcons();
 
-  if(checkVictory()) {
+  if(checkVictory(gameBoard)) {
     win();
   } else {
     playerX = !playerX;
