@@ -6,17 +6,17 @@
   <link rel="stylesheet" href="./src/output.css">
   <title>Jogo da Velha</title>
 </head>
-<body class="bg-linear-to-r from-slate-900 to-slate-800">
+<body class="bg-linear-to-r from-slate-900 to-slate-800 h-screen">
   <div id="end-modal"  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
     <div class="w-100 h-75 bg-amber-300 border-8 border-amber-500 rounded-xl flex items-center justify-center gap-20 flex-col">
       <h1 class="text-5xl font-semibol"></h1>
-      <div class="w-full flex justify-center gap-6">
+      <div class="w-full flex justify-center gap-3 sm:gap-5 px-2">
         <button id="restart-game" class="bg-red-500 px-5 py-3 text-white rounded-xl hover:opacity-80 hover:cursor-pointer">Recomeçar Jogo</button>
         <button id="new-match" class="bg-green-600 w-40 px-5 py-3 text-white rounded-xl hover:opacity-80 hover:cursor-pointer">Nova Partida</button>
       </div>
     </div>
   </div>
-  <div class="flex justify-between px-8 py-4">
+  <div class="flex justify-between px-2 sm:px-8 py-4">
     <div class="flex items-center gap-3">
       <button id="number-of-players" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="user-round"></i></button>
       <div class="relative text-left">
@@ -43,22 +43,22 @@
       <button id="config" class="bg-amber-500 p-1.5 rounded-md border-2 border-amber-600 text-orange-950 hover:opacity-90 hover:cursor-pointer"><i data-lucide="settings"></i></button>
     </div>
   </div>
-  <div id="scoreboard" class="flex justify-center items-center gap-3 mb-10 mt-3">
-    <div id="x-score-board" class="bg-red-500 p-6 w-35 text-center text-white font-medium shadow-lg shadow-red-500/70">
-      <p id="x-score-name">Você (X)</p>
+  <div id="scoreboard" class="lg:absolute lg:w-full lg:top-0 flex justify-center items-center gap-2 cel-all:gap-3 mt-3 -z-10 px-2">
+    <div id="x-score-board" class="bg-red-500 flex flex-col justify-center h-26 w-35 text-center text-white font-medium shadow-lg shadow-red-500/70">
+      <p id="x-score-name" >Você (X)</p>
       <p id="x-score" class="text-3xl">0</p>
     </div>
-    <div class="bg-gray-500 p-6 w-35 text-center text-white font-medium">
+    <div class="bg-gray-500 flex flex-col justify-center h-26 w-35 text-center text-white font-medium">
       <p>Empate</p>
       <p id="draw-score" class="text-3xl">0</p>
     </div>
-    <div id="o-score-board" class="bg-green-500 p-6 w-35 text-center text-white font-medium shadow-lg">
-      <p id="o-score-name">Máquina (O)</p>
+    <div id="o-score-board" class="bg-green-500 flex flex-col justify-center h-26 w-35 text-center text-white font-medium shadow-lg">
+      <p id="o-score-name" class="">Máquina (O)</p>
       <p id="o-score" class="text-3xl">0</p>
     </div>
   </div>
-  <div class="flex flex-col justify-center items-center ">
-    <div id="board" class="relative grid grid-cols-3  w-87.5 h-87.5">
+  <div class="flex flex-col justify-center items-center min-h-87.5 h-[calc(100vh-192px)] lg:h-[calc(100vh-108px)] lg:mt-12">
+    <div id="board" class="relative grid grid-cols-3 w-87.5 h-87.5">
       <button id="s0" class="relative border-r-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s1" class="relative border-r-2 border-b-2 border-l-2 border-indigo-400 w-full flex justify-center items-center"></button>
       <button id="s2" class="relative border-l-2 border-b-2 border-indigo-400 w-full flex justify-center items-center"></button>

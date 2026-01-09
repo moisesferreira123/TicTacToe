@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 @theme {
+  --breakpoint-cel-all: 480px;
+  --breakpoint-cel: 415px;
+
   --animate-pop-in: pop-in 0.3s ease-out forwards;
   --animate-victory-line: victory-line 0.5s linear forwards; 
   --animate-pop-in-victory: pop-in-victory 1s linear forwards;
+  --animate-pop-in-victory-small: pop-in-victory-small 1s linear forwards;
 
   @keyframes pop-in {
     0% {
@@ -34,6 +38,18 @@
     }
     70% {
       transform: scale(1.07);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pop-in-victory-small {
+    0% {
+      transform: scale(1);
+    }
+    70% {
+      transform: scale(1.02);
     }
     100% {
       transform: scale(1);

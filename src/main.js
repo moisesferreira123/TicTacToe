@@ -52,9 +52,9 @@ let computerTimerReset;
 
 const victoryWays = [
   // Horizontais
-  { combo: [0, 1, 2], style: "top: 15.1%; left:-5%; width: 110%; rotate: 0deg;" },
-  { combo: [3, 4, 5], style: "top: 48.5%; left:-5%; width: 110%; rotate: 0deg;" },
-  { combo: [6, 7, 8], style: "top: 81.8%; left:-5%; width: 110%; rotate: 0deg;" },
+  { combo: [0, 1, 2], style: "top: 15.1%; rotate: 0deg;" },
+  { combo: [3, 4, 5], style: "top: 48.5%; rotate: 0deg;" },
+  { combo: [6, 7, 8], style: "top: 81.8%; rotate: 0deg;" },
   // Verticais
   { combo: [0, 3, 6], style: "top: 48.5%; left: -38.4%; width: 110%; rotate: 90deg;" },
   { combo: [1, 4, 7], style: "top: 48.5%; left: -4.9%; width: 110%; rotate: 90deg;" },
@@ -132,6 +132,9 @@ function win() {
   for(const item of victoryWays) {
     if(item.combo.length === victoryIndices.length && item.combo.every((value, index) => value === victoryIndices[index])) {
       victoryLine.style.cssText = item.style;
+      if(item.combo.every((value, index) => value === victoryWays[0].combo[index] || value === victoryWays[1].combo[index] || value === victoryWays[2].combo[index])) {
+        victoryLine.classList.add("left-0", "w-[100%]", "cel:-left-[5%]", "cel:w-[110%]");
+      }
     }
   }
 
@@ -147,21 +150,21 @@ function win() {
 
   setTimeout(() => {
       victoryLine.classList.remove("animate-victory-line");
-      victoryLine.classList.add("animate-pop-in-victory");
+      victoryLine.classList.add("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
       i0.classList.remove("animate-pop-in", "temp-animate");
       i1.classList.remove("animate-pop-in", "temp-animate");
       i2.classList.remove("animate-pop-in", "temp-animate");
-      i0.classList.add("animate-pop-in-victory");
-      i1.classList.add("animate-pop-in-victory");
-      i2.classList.add("animate-pop-in-victory");
+      i0.classList.add("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
+      i1.classList.add("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
+      i2.classList.add("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
   }, 1500);
 
   setTimeout(() => {
     body.classList.remove("pointer-events-none");
-    victoryLine.classList.remove("animate-pop-in-victory");
-    i0.classList.remove("animate-pop-in-victory");
-    i1.classList.remove("animate-pop-in-victory");
-    i2.classList.remove("animate-pop-in-victory");
+    victoryLine.classList.remove("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
+    i0.classList.remove("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
+    i1.classList.remove("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
+    i2.classList.remove("cel:animate-pop-in-victory", "animate-pop-in-victory-small");
     showWinModal();
   }, 2500);
 }
@@ -719,6 +722,3 @@ window.addEventListener("click", (event) =>  {
   }
 
 });
-
-// TODO: Coisas que faltam:
-// Colocar a parte de jogar sozinho
