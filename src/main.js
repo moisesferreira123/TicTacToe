@@ -589,14 +589,26 @@ newMatch.addEventListener("click", () => {
 
 nPlayers.addEventListener("click", () => {
   clearTimeout(computerTimerReset);
+  
+  const xScoreName = document.getElementById("x-score-name");
+  const oScoreName = document.getElementById("o-score-name");
 
   if(onePlayer) {
     difficulty.classList.add("hidden");
     nPlayers.innerHTML = `<i data-lucide="users-round"></i>`;
+    xScoreName.innerHTML = "Jogador X";
+    oScoreName.innerHTML = "Jogador O";
     onePlayer = false;
   } else {
     difficulty.classList.remove("hidden");
     nPlayers.innerHTML = `<i data-lucide="user-round"></i>`;
+    if(playerIsX) {
+      xScoreName.innerHTML = "Você (X)";
+      oScoreName.innerHTML = "Máquina (O)";
+    } else {
+      xScoreName.innerHTML = "Máquina (X)";
+      oScoreName.innerHTML = "Você (O)";
+    }
     onePlayer = true;
   }
 
