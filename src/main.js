@@ -281,6 +281,7 @@ function restartGameFunc() {
   initialPlayerX = true;
   resetMatch();
   resetScore();
+  board.classList.remove("pointer-events-none");
 }
 
 function openConfigModal() {
@@ -616,7 +617,6 @@ nPlayers.addEventListener("click", () => {
 
   restartGameFunc();
 
-  board.classList.remove("pointer-events-none");
   playSound(buttonSound);
 });
 
